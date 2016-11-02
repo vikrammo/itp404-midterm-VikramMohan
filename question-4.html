@@ -1,0 +1,60 @@
+<!-- I got it working using regular handlebars but not worth the constructor, I commented out the code that was in the instructions but didn't work  -->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>ITP404Midterm-Q4</title>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+    <script type="template/handlebars" id="comment-template">
+        <h2>Comments</h2> {{#each comment}}
+        <p>{{attributes.body}}</p>
+        {{/each}}
+    </script>
+    <script>
+        // function CommentList(comment) {
+        //   this.comment = comment;
+        // }
+        //
+        // Comment.prototype.fetch = function() {
+        //   $.ajax({
+        //     url: 'http://itp-api.herokuapp.com/api/comments',
+        //     type: 'get',
+        //
+        //   });
+        // };
+
+        var templateString = document.getElementById('comment-template').innerHTML;
+        var template = Handlebars.compile(templateString);
+
+
+        var promise = $.ajax({
+            url: 'http://itp-api.herokuapp.com/api/comments'
+        });
+
+        promise.then(function(genreList) {
+
+            var html = template({
+                comment: genreList.data
+            });
+
+
+            document.getElementById('comments').innerHTML = html;
+        });
+
+        var commentList = new CommentList();
+        commentList.fetch().then(function(comments) {
+            console.log(comments);
+            // comments should look like [ { id: 1, body: 'First!' }, ... ]
+        });
+    </script>
+
+</body>
+
+</html>

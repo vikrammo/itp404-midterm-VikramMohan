@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>ITP404Midterm-Q1</title>
+</head>
+
+<body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+    <script type="template/handlebars" id="infoTemplate">
+        {{#each input}}
+        <span class="fullname"> {{firstName}} {{lastName}}  {{#if isAdmin}}
+         Admin
+      {{else}}
+         Not Admin
+      {{/if}}
+    </span>
+        <ul>
+            <li>{{openSourceProjects.[0].name}}</li>
+
+            <li>{{openSourceProjects.[1].name}}</li>
+
+            <li>{{openSourceProjects.[2].name}}</li>
+
+            <li>{{openSourceProjects.[3].name}}</li>
+
+            <li>{{openSourceProjects.[4].name}}</li>
+            </ul>
+        {{/each}}
+    </script>
+
+    <div id="dataSource"></div>
+    <script>
+        var templateString = document.getElementById('infoTemplate').innerHTML;
+        var template = Handlebars.compile(templateString);
+
+        var promise = $.ajax({  
+            url: 'http://itp-api.herokuapp.com/api/v1/me',
+              type: 'get',
+
+        })
+
+        promise.then(function(user) {    
+            var html = template({    
+                input: user  
+            });
+
+            $('#dataSource').html(html);
+        }, function() {
+            console.log("there was an error");  
+        });
+    </script>
+
+</body>
+
+</html>
